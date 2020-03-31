@@ -116,6 +116,8 @@ function loadCustomEmojis (customEmojis) {
       emoji.codepoints = emoji.codepoints.split(' ')
     }
   })
+  
+  return customEmojis;
 }
 
 function renderEmoji (emojis, name) {
@@ -134,6 +136,14 @@ function renderEmoji (emojis, name) {
     )
   } else {
     styles.push(`background-image:url(${emojis[name].src})`)
+  }
+  
+  if (!emojis[name].codepoints) {
+    styles.push(
+        'width: 16px',
+        'height: 16px',
+        'display: inline-block'
+    )
   }
 
   const codepoints = emojis[name].codepoints
