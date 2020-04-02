@@ -111,11 +111,20 @@ function loadCustomEmojis (customEmojis) {
     customEmojis = {}
   }
 
+  Object.keys(customEmojis).forEach(key => {
+    customEmojis[key] = {
+      src: typeof customEmojis[key] === 'string' ? customEmojis[key] : customEmojis[key].src,
+      isCustom: true
+    };
+  });
+
+  /*
   Object.values(customEmojis).forEach(emoji => {
     if (emoji.codepoints && !_.isArray(emoji.codepoints)) {
       emoji.codepoints = emoji.codepoints.split(' ')
     }
   })
+   */
   
   return customEmojis;
 }
@@ -129,6 +138,17 @@ function renderEmoji (emojis, name) {
       .map(k => k + ':' + options.styles[k])
     : []
 
+  if (emojis[name].isCustom) {
+    styles.push(
+        'width: 16px',
+        'height: 16px',
+        'display: inline-block'
+    )
+  } else {
+    const point = emojis[name].codepoints.join('-');
+    emojis[name].src = `https://twemoji.maxcdn.com/v/latest/svg/${point}.svg`;
+  }
+
   if (options.inject) {
     styles.push(
       'color: transparent',
@@ -136,14 +156,6 @@ function renderEmoji (emojis, name) {
     )
   } else {
     styles.push(`background-image:url(${emojis[name].src})`)
-  }
-  
-  if (!emojis[name].codepoints) {
-    styles.push(
-        'width: 16px',
-        'height: 16px',
-        'display: inline-block'
-    )
   }
 
   const codepoints = emojis[name].codepoints
