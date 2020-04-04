@@ -74,7 +74,7 @@ function replaceColons (node, emojis) {
   if (!node || !node.childNodes) { return }
   for (let i = node.childNodes.length - 1; i >= 0; i--) {
     const child = node.childNodes[i]
-    if (child.tagName === 'PRE' || child.tagName === 'CODE') { return }
+    if (child.tagName === 'PRE' || child.tagName === 'CODE') { continue }
     if (child.nodeType === 3) {
       const content = child.data.replace(
         /:(\w+):/ig,
